@@ -1,0 +1,12 @@
+{
+  "name": "prioritized-queue",
+  "version": "0.0.1",
+  "description": "A scheduler that queues and prioritizes tasks",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/wboyer/prioritized-queue-js.git"
+  },
+  "author": "Bill Boyer",
+  "files": ["./src"],
+  "main": "./src/scheduler"
+}
