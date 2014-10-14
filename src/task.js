@@ -98,10 +98,10 @@ var Task =
     abortRun: function (scheduler)
     {
         this.addDetails(this.savedDetails);
-        this.finishRun(scheduler);
+        this.finishRun(scheduler, 1000);
     },
 
-    finishRun: function (scheduler)
+    finishRun: function (scheduler, backoff)
     {
         console.log('finished ' + this);
 
@@ -112,7 +112,7 @@ var Task =
         setTimeout(function ()
         {
             self.requeue(scheduler);
-        }, 1000);
+        }, backoff ? backoff : 100);
     },
 
     toString: function ()
