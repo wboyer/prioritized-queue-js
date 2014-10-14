@@ -62,17 +62,17 @@ var Task =
 
     clearDetails: function ()
     {
-        var savedDetails = { key: this.details.key, priority: this.details.priority, instructions: this.details.instructions };
+        var latestDetails = { key: this.details.key, priority: this.details.priority, instructions: this.details.instructions };
 
         this.details.priority = 0;
         this.details.instructions = [];
 
-        return savedDetails;
+        return latestDetails;
     },
 
     run: function (scheduler)
     {
-        this.savedDetails = this.clearDetails();
+        this.latestDetails = this.clearDetails();
 
         console.log('running ' + this);
 
@@ -97,7 +97,7 @@ var Task =
 
     abortRun: function (scheduler)
     {
-        this.addDetails(this.savedDetails);
+        this.addDetails(this.latestDetails);
         this.finishRun(scheduler, 1000);
     },
 
