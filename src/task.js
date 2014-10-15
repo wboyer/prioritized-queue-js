@@ -98,7 +98,8 @@ var Task =
     abortRun: function (scheduler)
     {
         this.addDetails(this.latestDetails);
-        this.finishRun(scheduler, 1000);
+        this.details.numFailures += 1;
+        this.finishRun(scheduler, 1000 + Math.pow(3, this.details.numFailures));
     },
 
     finishRun: function (scheduler, backoff)
@@ -106,6 +107,9 @@ var Task =
         console.log('finished ' + this);
 
         scheduler.numRunningTasks -= 1;
+
+        if (this.detail.numFailures >= scheduler.maxNumFailures)
+            return;
 
         var self = this;
 
@@ -126,7 +130,7 @@ exports.newTask = function (key, func)
     var task = Object.create(Task);
 
     task.key = key;
-    task.details = { key: key, priority: 0, instructions: [] };
+    task.details = { key: key, priority: 0, numFailures: 0, instructions: [] };
     task.currentQueue = null;
     task.func = func;
 

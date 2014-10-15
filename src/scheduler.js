@@ -55,7 +55,7 @@ var Scheduler =
     }
 };
 
-exports.newScheduler = function (numQueues, queueCapacity, queueIndexLogBase, maxRunningTasks)
+exports.newScheduler = function (numQueues, queueCapacity, queueIndexLogBase, maxRunningTasks, maxNumFailures)
 {
     var scheduler = Object.create(Scheduler);
 
@@ -69,6 +69,8 @@ exports.newScheduler = function (numQueues, queueCapacity, queueIndexLogBase, ma
 
     scheduler.maxRunningTasks = maxRunningTasks;
     scheduler.numRunningTasks = 0;
+
+    scheduler.maxNumFailures = maxNumFailures;
 
     scheduler.taskMap = {};
 
