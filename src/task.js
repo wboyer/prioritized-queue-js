@@ -108,7 +108,7 @@ var Task =
 
         scheduler.numRunningTasks -= 1;
 
-        if (this.detail.numFailures >= scheduler.maxNumFailures)
+        if (this.details.numFailures >= scheduler.maxNumFailures)
             return;
 
         var self = this;
