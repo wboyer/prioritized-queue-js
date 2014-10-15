@@ -23,10 +23,15 @@ var Scheduler =
         }
     },
 
+    removeTask: function(task)
+    {
+        delete this.taskMap[task.details.key];
+    },
+
     enqueueTask: function (task)
     {
         if (task.details.priority == 0)
-            delete this.taskMap[task.details.key];
+            this.removeTask(task);
         else {
             var queueIndex = Math.floor(Math.log(task.details.priority) / Math.log(this.queueIndexLogBase));
 

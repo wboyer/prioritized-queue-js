@@ -108,8 +108,10 @@ var Task =
 
         scheduler.numRunningTasks -= 1;
 
-        if (this.details.numFailures >= scheduler.maxNumFailures)
+        if (this.details.numFailures >= scheduler.maxNumFailures) {
+            scheduler.removeTask(this);
             return;
+        }
 
         var self = this;
 
