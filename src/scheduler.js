@@ -3,20 +3,35 @@ var Task = require('./task.js');
 
 var Scheduler =
 {
+    runTask: function (queue)
+    {
+        var task = queue.pop();
+        if (task) {
+            if (this.runningTaskMap)
+                this.runningTaskMap[task.key] = task;
+
+            this.numRunningTasks += 1;
+            console.log(this.numRunningTasks + ' tasks now running, max ' + this.maxRunningTasks);
+            task.dequeue().run(this);
+            return true;
+        }
+        else
+            return false;
+    },
+
     runTasks: function ()
     {
+        if (this.instrumenter) {
+            var self = this;
+            this.instrumenter.recordState(function () { return self.describeState(); });
+        }
+
         while (this.numRunningTasks < this.maxRunningTasks) {
             var taskFound = false;
 
-            for (var i = 0; (i < this.numQueues) && (this.numRunningTasks < this.maxRunningTasks); i++) {
-                var task = this.queues[i].pop();
-                if (task) {
-                    this.numRunningTasks += 1;
-                    console.log(this.numRunningTasks + ' tasks now running, max ' + this.maxRunningTasks);
-                    task.dequeue().run(this);
+            for (var i = 0; (i < this.numQueues) && (this.numRunningTasks < this.maxRunningTasks); i++)
+                if (this.runTask(this.queues[i]))
                     taskFound = true;
-                }
-            }
 
             if (!taskFound)
                 return;
@@ -41,6 +56,9 @@ var Scheduler =
             task.enqueue(this.queues[queueIndex]);
         }
 
+        if (this.runningTaskMap)
+            delete this.runningTaskMap[task.key];
+
         this.runTasks();
     },
 
@@ -57,13 +75,36 @@ var Scheduler =
         task.add(priority, instructions);
 
         this.enqueueTask(task);
+    },
+
+    describeConfig: function()
+    {
+        return { b: this.queueIndexLogBase, n: this.numQueues };
+    },
+
+    describeState: function()
+    {
+        var state = { q: [] };
+
+        for (var i in this.queues) {
+            var queue = this.queues[i];
+            for (var j = 0; j < queue.numEntries; j++) {
+                var task = queue.entries[queue.peek(j)];
+                if (j == 0)
+                    state.q[i] = [];
+                state.q[i].push({ k: task.key, p: task.details.priority } );
+            }
+        }
+
+        return state;
     }
 };
 
-exports.newScheduler = function (numQueues, queueCapacity, queueIndexLogBase, maxRunningTasks, maxNumFailures)
+exports.newScheduler = function (numQueues, queueCapacity, queueIndexLogBase, maxRunningTasks, maxNumFailures, instrumenter)
 {
     var scheduler = Object.create(Scheduler);
 
+    scheduler.taskMap = {};
     scheduler.queues = [];
 
     for (var i = 0; i < numQueues; i++)
@@ -77,7 +118,15 @@ exports.newScheduler = function (numQueues, queueCapacity, queueIndexLogBase, ma
 
     scheduler.maxNumFailures = maxNumFailures;
 
-    scheduler.taskMap = {};
+    scheduler.instrumenter = instrumenter;
+
+    if (instrumenter) {
+        scheduler.instrumenter.recordConfig(function ()
+        {
+            return scheduler.describeConfig();
+        });
+        scheduler.runningTaskMap = {};
+    }
 
     return scheduler;
 };
