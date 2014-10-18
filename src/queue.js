@@ -17,15 +17,25 @@ var Queue =
         this.numEntries += 1;
     },
 
-    pop: function ()
+    peek: function (i)
     {
         if (this.numEntries == 0)
-            return null;
+            return -1;
 
-        var i = this.lastEntry + 1 - this.numEntries;
+        i += this.lastEntry + 1 - this.numEntries;
 
         if (i < 0)
             i += this.maxEntries;
+
+        return i;
+    },
+
+    pop: function ()
+    {
+        var i = this.peek(0);
+
+        if (i < 0)
+            return null;
 
         var task = this.entries[i];
         delete this.entries[i];
