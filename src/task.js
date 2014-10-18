@@ -7,12 +7,13 @@ var Task =
 
         if (!this.currentQueue)
             console.log('added task ' + this + ' to queue ' + queue);
-        else if (this.currentQueue == queue)
-            return;
-        else {
-            console.log('moved task ' + this + ' from queue ' + this.currentQueue + ' to ' + queue);
-            this.remove(this.currentQueue);
-        }
+        else
+            if (this.currentQueue == queue)
+                return;
+            else {
+                console.log('moved task ' + this + ' from queue ' + this.currentQueue + ' to ' + queue);
+                this.remove(this.currentQueue);
+            }
 
         queue.push(this);
         this.currentQueue = queue;
@@ -36,14 +37,6 @@ var Task =
         return this;
     },
 
-    requeue: function (scheduler)
-    {
-        this.running = false;
-        scheduler.enqueueTask(this);
-
-        return this;
-    },
-
     add: function (priority, instructions)
     {
         this.details.priority += priority;
@@ -62,7 +55,7 @@ var Task =
 
     clearDetails: function ()
     {
-        var latestDetails = { key: this.details.key, priority: this.details.priority, instructions: this.details.instructions };
+        var latestDetails = { priority: this.details.priority, instructions: this.details.instructions };
 
         this.details.priority = 0;
         this.details.instructions = [];
@@ -109,21 +102,23 @@ var Task =
         scheduler.numRunningTasks -= 1;
 
         if (this.details.numFailures >= scheduler.maxNumFailures) {
-            scheduler.removeTask(this);
+            scheduler.deleteTask(this);
             return;
         }
 
         var self = this;
 
         setTimeout(function ()
-        {
-            self.requeue(scheduler);
-        }, backoff ? backoff : 100);
+            {
+                self.running = false;
+                scheduler.enqueueTask(self);
+            },
+            backoff ? backoff : 100);
     },
 
     toString: function ()
     {
-        return '("' + this.details.key + '", priority ' + this.details.priority + ')';
+        return '("' + this.key + '", priority ' + this.details.priority + ')';
     }
 };
 
@@ -132,7 +127,7 @@ exports.newTask = function (key, func)
     var task = Object.create(Task);
 
     task.key = key;
-    task.details = { key: key, priority: 0, numFailures: 0, instructions: [] };
+    task.details = { priority: 0, numFailures: 0, instructions: [] };
     task.currentQueue = null;
     task.func = func;
 
