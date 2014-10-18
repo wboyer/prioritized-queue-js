@@ -32,11 +32,10 @@ var Instrumenter =
     }
 };
 
-exports.newInstrumenter = function (scheduler, io, runThrottle)
+exports.newInstrumenter = function (io, runThrottle)
 {
     var instrumenter = Object.create(Instrumenter);
 
-    instrumenter.scheduler = scheduler;
     instrumenter.io = io;
 
     instrumenter.timeOfLastRun = 0;
