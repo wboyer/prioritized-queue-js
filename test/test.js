@@ -3,7 +3,6 @@ var assert = require('assert');
 var Task = require('../src/task.js');
 var Queue = require('../src/queue.js');
 var Scheduler = require('../src/scheduler.js');
-var Instrumenter = require('../src/instrumenter.js');
 
 function test1(req, res)
 {
@@ -42,7 +41,7 @@ function test1(req, res)
 
 function test2()
 {
-    var scheduler = Scheduler.newScheduler(3, 100, 2, 3, 10, Instrumenter.newInstrumenter(null, 10));
+    var scheduler = Scheduler.newScheduler(3, 100, 2, 3, 10, true, null);
 
     for (var i = 0; i < 10; i++)
         scheduler.submitTask("a", 1, null, function(success, failure) {

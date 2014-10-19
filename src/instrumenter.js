@@ -1,22 +1,24 @@
 var Instrumenter =
 {
-    recordConfig: function (func)
+    recordConfig: function ()
     {
         console.log('CONFIG');
 
-        var config = func();
-        console.log(config);
+        if (!this.configFunc)
+            return;
 
-        if (this.io)
-            this.io.emit('config', config);
+        var config = this.configFunc.apply(this.subject);
+
+        if (this.socket)
+            this.socket.emit('config', config);
     },
 
-    recordState: function (func)
+    recordState: function ()
     {
         var timeNow = new Date().getTime();
 
         if (timeNow - this.timeOfLastRun < this.runThrottle) {
-            console.log("SKIP");
+            console.log("SKIP STATE");
             return;
         }
 
@@ -24,19 +26,28 @@ var Instrumenter =
 
         console.log('STATE');
 
-        var state = func();
-        console.log(state);
+        if (!this.stateFunc)
+            return;
 
-        if (this.io)
-            this.io.emit('state', state);
+        var state = this.stateFunc.apply(this.subject);
+
+        if (this.socket)
+            this.socket.emit('state', state);
     }
 };
 
-exports.newInstrumenter = function (io, runThrottle)
+exports.newInstrumenter = function (subject, socket, runThrottle)
 {
     var instrumenter = Object.create(Instrumenter);
 
-    instrumenter.io = io;
+    instrumenter.subject = subject;
+    instrumenter.socket = socket;
+
+    if (socket)
+        socket.on('connection', function ()
+        {
+            instrumenter.recordConfig()
+        });
 
     instrumenter.timeOfLastRun = 0;
     instrumenter.runThrottle = runThrottle;

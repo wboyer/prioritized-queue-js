@@ -1,5 +1,6 @@
 var Queue = require('./queue.js');
 var Task = require('./task.js');
+var Instrumenter = require('./instrumenter.js');
 
 var Scheduler =
 {
@@ -21,10 +22,8 @@ var Scheduler =
 
     runTasks: function ()
     {
-        if (this.instrumenter) {
-            var self = this;
-            this.instrumenter.recordState(function () { return self.describeState(); });
-        }
+        if (this.instrumenter)
+            this.instrumenter.recordState();
 
         while (this.numRunningTasks < this.maxRunningTasks) {
             var taskFound = false;
@@ -38,7 +37,7 @@ var Scheduler =
         }
     },
 
-    deleteTask: function(task)
+    deleteTask: function (task)
     {
         delete this.taskMap[task.key];
     },
@@ -77,12 +76,12 @@ var Scheduler =
         this.enqueueTask(task);
     },
 
-    describeConfig: function()
+    describeConfig: function ()
     {
         return { b: this.queueIndexLogBase, n: this.numQueues };
     },
 
-    describeState: function()
+    describeState: function ()
     {
         var state = { q: [] };
 
@@ -92,7 +91,7 @@ var Scheduler =
                 var task = queue.entries[queue.peek(j)];
                 if (j == 0)
                     state.q[i] = [];
-                state.q[i].push({ k: task.key, p: task.details.priority } );
+                state.q[i].push({ k: task.key, p: task.details.priority });
             }
         }
 
@@ -100,7 +99,7 @@ var Scheduler =
     }
 };
 
-exports.newScheduler = function (numQueues, queueCapacity, queueIndexLogBase, maxRunningTasks, maxNumFailures, instrumenter)
+exports.newScheduler = function (numQueues, queueCapacity, queueIndexLogBase, maxRunningTasks, maxNumFailures, createInstrumenter, instrumenterSocket)
 {
     var scheduler = Object.create(Scheduler);
 
@@ -118,13 +117,11 @@ exports.newScheduler = function (numQueues, queueCapacity, queueIndexLogBase, ma
 
     scheduler.maxNumFailures = maxNumFailures;
 
-    scheduler.instrumenter = instrumenter;
+    if (createInstrumenter) {
+        scheduler.instrumenter = Instrumenter.newInstrumenter(scheduler, instrumenterSocket, 10);
+        scheduler.instrumenter.configFunc = scheduler.describeConfig;
+        scheduler.instrumenter.stateFunc = scheduler.describeState;
 
-    if (instrumenter) {
-        scheduler.instrumenter.recordConfig(function ()
-        {
-            return scheduler.describeConfig();
-        });
         scheduler.runningTaskMap = {};
     }
 
