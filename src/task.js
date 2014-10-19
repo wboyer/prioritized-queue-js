@@ -55,7 +55,9 @@ var Task =
 
     clearDetails: function ()
     {
-        var latestDetails = { priority: this.details.priority, instructions: this.details.instructions };
+        var now = new Date().getTime();
+
+        var latestDetails = { priority: this.details.priority, instructions: this.details.instructions, time: now };
 
         this.details.priority = 0;
         this.details.instructions = [];

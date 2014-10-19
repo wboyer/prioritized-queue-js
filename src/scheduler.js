@@ -83,7 +83,9 @@ var Scheduler =
 
     describeState: function ()
     {
-        var state = { q: [] };
+        var now = new Date().getTime();
+
+        var state = { q: [], r: [], t: now };
 
         for (var i in this.queues) {
             var queue = this.queues[i];
@@ -93,6 +95,11 @@ var Scheduler =
                     state.q[i] = [];
                 state.q[i].push({ k: task.key, p: task.details.priority });
             }
+        }
+
+        for (var key in this.runningTaskMap) {
+            var task = this.runningTaskMap[key];
+            state.r.push({ k: task.key, p: task.latestDetails.priority, t: now - task.latestDetails.time })
         }
 
         return state;
@@ -118,7 +125,7 @@ exports.newScheduler = function (numQueues, queueCapacity, queueIndexLogBase, ma
     scheduler.maxNumFailures = maxNumFailures;
 
     if (createInstrumenter) {
-        scheduler.instrumenter = Instrumenter.newInstrumenter(scheduler, instrumenterSocket, 10);
+        scheduler.instrumenter = Instrumenter.newInstrumenter(scheduler, instrumenterSocket, 0);
         scheduler.instrumenter.configFunc = scheduler.describeConfig;
         scheduler.instrumenter.stateFunc = scheduler.describeState;
 
