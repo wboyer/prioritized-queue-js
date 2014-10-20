@@ -31,6 +31,8 @@ var Instrumenter =
 
         var state = this.stateFunc.apply(this.subject);
 
+        console.log(state);
+
         if (this.socket)
             this.socket.emit('state', state);
     }

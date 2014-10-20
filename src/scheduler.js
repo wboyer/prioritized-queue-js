@@ -13,7 +13,9 @@ var Scheduler =
 
             this.numRunningTasks += 1;
             console.log(this.numRunningTasks + ' tasks now running, max ' + this.maxRunningTasks);
+
             task.dequeue().run(this);
+
             return true;
         }
         else
@@ -22,9 +24,6 @@ var Scheduler =
 
     runTasks: function ()
     {
-        if (this.instrumenter)
-            this.instrumenter.recordState();
-
         while (this.numRunningTasks < this.maxRunningTasks) {
             var taskFound = false;
 
@@ -32,9 +31,20 @@ var Scheduler =
                 if (this.runTask(this.queues[i]))
                     taskFound = true;
 
+            if (this.instrumenter)
+                this.instrumenter.recordState();
+
             if (!taskFound)
                 return;
         }
+    },
+
+    onTaskFinished: function (task)
+    {
+        if (this.runningTaskMap)
+            delete this.runningTaskMap[task.key];
+
+        this.enqueueTask(task);
     },
 
     deleteTask: function (task)
@@ -54,9 +64,6 @@ var Scheduler =
 
             task.enqueue(this.queues[queueIndex]);
         }
-
-        if (this.runningTaskMap)
-            delete this.runningTaskMap[task.key];
 
         this.runTasks();
     },
@@ -99,7 +106,7 @@ var Scheduler =
 
         for (var key in this.runningTaskMap) {
             var task = this.runningTaskMap[key];
-            state.r.push({ k: task.key, p: task.latestDetails.priority, t: now - task.latestDetails.time })
+            state.r.push({ k: task.key, p: task.details.priority, t: now - task.latestDetails.time })
         }
 
         return state;

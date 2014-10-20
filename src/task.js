@@ -113,7 +113,7 @@ var Task =
         setTimeout(function ()
             {
                 self.running = false;
-                scheduler.enqueueTask(self);
+                scheduler.onTaskFinished(self);
             },
             backoff ? backoff : 100);
     },
