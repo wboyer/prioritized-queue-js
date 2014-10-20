@@ -48,7 +48,8 @@ exports.newInstrumenter = function (subject, socket, runThrottle)
     if (socket)
         socket.on('connection', function ()
         {
-            instrumenter.recordConfig()
+            instrumenter.recordConfig();
+            instrumenter.recordState();
         });
 
     instrumenter.timeOfLastRun = 0;

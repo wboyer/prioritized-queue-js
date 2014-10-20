@@ -81,11 +81,14 @@ var Scheduler =
         task.add(priority, instructions);
 
         this.enqueueTask(task);
+
+        if (this.instrumenter)
+            scheduler.timeLastTaskSubmitted = new Date().getTime();
     },
 
     describeConfig: function ()
     {
-        return { b: this.queueIndexLogBase, n: this.numQueues };
+        return { b: this.queueIndexLogBase, n: this.numQueues, c: this.timeCreated, s: this.timeLastTaskSubmitted };
     },
 
     describeState: function ()
@@ -135,6 +138,9 @@ exports.newScheduler = function (numQueues, queueCapacity, queueIndexLogBase, ma
         scheduler.instrumenter = Instrumenter.newInstrumenter(scheduler, instrumenterSocket, 0);
         scheduler.instrumenter.configFunc = scheduler.describeConfig;
         scheduler.instrumenter.stateFunc = scheduler.describeState;
+
+        scheduler.timeCreated = new Date().getTime();
+        scheduler.timeLastTaskSubmitted = 0;
 
         scheduler.runningTaskMap = {};
     }
