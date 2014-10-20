@@ -24,6 +24,9 @@ var Scheduler =
 
     runTasks: function ()
     {
+        if (this.instrumenter)
+            this.instrumenter.recordState();
+
         while (this.numRunningTasks < this.maxRunningTasks) {
             var taskFound = false;
 
@@ -31,11 +34,11 @@ var Scheduler =
                 if (this.runTask(this.queues[i]))
                     taskFound = true;
 
-            if (this.instrumenter)
-                this.instrumenter.recordState();
-
             if (!taskFound)
                 return;
+
+            if (this.instrumenter)
+                this.instrumenter.recordState();
         }
     },
 
