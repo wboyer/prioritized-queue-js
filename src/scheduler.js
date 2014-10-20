@@ -83,7 +83,7 @@ var Scheduler =
         this.enqueueTask(task);
 
         if (this.instrumenter)
-            scheduler.timeLastTaskSubmitted = new Date().getTime();
+            this.timeLastTaskSubmitted = new Date().getTime();
     },
 
     describeConfig: function ()
