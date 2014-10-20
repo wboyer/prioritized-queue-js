@@ -30,7 +30,7 @@ var Scheduler =
         while (this.numRunningTasks < this.maxRunningTasks) {
             var taskFound = false;
 
-            for (var i = 0; (i < this.numQueues) && (this.numRunningTasks < this.maxRunningTasks); i++)
+            for (var i = this.numQueues - 1; (i >= 0) && (this.numRunningTasks < this.maxRunningTasks); i--)
                 if (this.runTask(this.queues[i]))
                     taskFound = true;
 
