@@ -1,3 +1,5 @@
+var log = require('./log');
+
 var Task =
 {
     enqueue: function (queue)
@@ -6,12 +8,12 @@ var Task =
             return;
 
         if (!this.currentQueue)
-            console.log('added task ' + this + ' to queue ' + queue);
+            log.log('added task ' + this + ' to queue ' + queue);
         else
             if (this.currentQueue == queue)
                 return;
             else {
-                console.log('moved task ' + this + ' from queue ' + this.currentQueue + ' to ' + queue);
+                log.log('moved task ' + this + ' from queue ' + this.currentQueue + ' to ' + queue);
                 this.remove(this.currentQueue);
             }
 
@@ -69,7 +71,7 @@ var Task =
     {
         this.latestDetails = this.clearDetails();
 
-        console.log('running ' + this);
+        log.log('running ' + this);
 
         try {
             var self = this;
@@ -85,7 +87,7 @@ var Task =
             );
         }
         catch (exception) {
-            console.log(exception);
+            log.log(exception);
             this.abortRun(scheduler);
         }
     },
@@ -99,7 +101,7 @@ var Task =
 
     finishRun: function (scheduler, backoff)
     {
-        console.log('finished ' + this);
+        log.log('finished ' + this);
 
         scheduler.numRunningTasks -= 1;
 

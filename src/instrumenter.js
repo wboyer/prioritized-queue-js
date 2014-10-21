@@ -1,8 +1,10 @@
+var log = require('./log');
+
 var Instrumenter =
 {
     recordConfig: function ()
     {
-        console.log('CONFIG');
+        log.log('CONFIG');
 
         if (!this.configFunc)
             return;
@@ -18,20 +20,20 @@ var Instrumenter =
         var timeNow = new Date().getTime();
 
         if (timeNow - this.timeOfLastRun < this.runThrottle) {
-            console.log("SKIP STATE");
+            log.log("SKIP STATE");
             return;
         }
 
         this.timeOfLastRun = timeNow;
 
-        console.log('STATE');
+        log.log('STATE');
 
         if (!this.stateFunc)
             return;
 
         var state = this.stateFunc.apply(this.subject);
 
-        console.log(state);
+        log.log(state);
 
         if (this.socket)
             this.socket.emit('state', state);

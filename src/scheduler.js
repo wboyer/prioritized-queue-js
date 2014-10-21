@@ -2,6 +2,8 @@ var Queue = require('./queue.js');
 var Task = require('./task.js');
 var Instrumenter = require('./instrumenter.js');
 
+var log = require('./log');
+
 var Scheduler =
 {
     runTask: function (queue)
@@ -12,7 +14,7 @@ var Scheduler =
                 this.runningTaskMap[task.key] = task;
 
             this.numRunningTasks += 1;
-            console.log(this.numRunningTasks + ' tasks now running, max ' + this.maxRunningTasks);
+            log.log(this.numRunningTasks + ' tasks now running, max ' + this.maxRunningTasks);
 
             task.dequeue().run(this);
 
@@ -76,7 +78,7 @@ var Scheduler =
         var task = this.taskMap[key];
 
         if (!task) {
-            console.log('"' + key + '" not found in map');
+            log.log('"' + key + '" not found in map');
             task = Task.newTask(key, func);
             this.taskMap[key] = task;
         }

@@ -1,3 +1,5 @@
+var log = require('./log');
+
 var Queue =
 {
     push: function (task)
@@ -42,7 +44,7 @@ var Queue =
 
         this.numEntries -= 1;
 
-        console.log('pop task ' + task + ' from ' + this);
+        log.log('pop task ' + task + ' from ' + this);
 
         return task;
     },
