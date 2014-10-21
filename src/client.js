@@ -2,7 +2,7 @@ define(function ()
 {
     return {
 
-    this.numQueues: null,
+    numQueues: null,
     queueIndexLogBase: null,
 
     updateQueue: function (element, queue)
