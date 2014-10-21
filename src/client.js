@@ -62,7 +62,7 @@ define(function ()
                 else
                     queue = queue.find('.queue');
 
-                updateQueue(queue, queues[i]);
+                this.updateQueue(queue, queues[i]);
             }
 
             container.find('.queueContainer').filter(function (index)
