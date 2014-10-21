@@ -1,11 +1,11 @@
 define(function ()
 {
-    var numQueues;
-    var queueIndexLogBase;
-
     return {
 
-        updateQueue: function (element, queue)
+    numQueues: null,
+    queueIndexLogBase: null,
+
+    updateQueue: function (element, queue)
         {
             element = $(element);
 
