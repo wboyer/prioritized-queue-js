@@ -1,0 +1,8 @@
+{
+    "name": "prioritized-queue",
+    "version": "0.0.1",
+    "main": "./src/client.js",
+    "dependencies": {
+        "jquery": "2.1.x"
+    }
+}
