@@ -2,7 +2,7 @@ define(function ()
 {
     return {
 
-    numQueues: null,
+    this.numQueues: null,
     queueIndexLogBase: null,
 
     updateQueue: function (element, queue)
@@ -38,13 +38,13 @@ define(function ()
                 if (!queue.size()) {
                     queue = $('<div class="queueContainer" data-queue-index="' + i + '"><div class="queue"></div></div>').appendTo(container);
 
-                    if (numQueues)
-                        queue.css('width', 1. / numQueues * 100 + '%');
+                    if (this.numQueues)
+                        queue.css('width', 1. / this.numQueues * 100 + '%');
 
                     queue = queue.find('.queue');
 
-                    if (numQueues) {
-                        var nm1 = numQueues - 1;
+                    if (this.numQueues) {
+                        var nm1 = this.numQueues - 1;
 
                         var r = parseInt((255 * i / nm1)).toString(16);
                         if (r.length == 1)
