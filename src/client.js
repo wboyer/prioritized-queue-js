@@ -35,7 +35,7 @@ define(function ()
             for (var i = 0; i < queues.length; i++) {
                 var queue = container.find('[data-queue-index="' + i + '"]');
 
-                var queueLabel = 'Queue ' + i + '(Priorities ' + Math.pow(queueIndexLogBase, i) + '-' + (Math.pow(queueIndexLogBase, i+1) - 1) + ')';
+                var queueLabel = 'Queue ' + i + '(Priorities ' + Math.pow(this.queueIndexLogBase, i) + '-' + (Math.pow(this.queueIndexLogBase, i+1) - 1) + ')';
 
                 if (!queue.size()) {
                     queue = $('<div class="queueContainer" data-queue-index="' + i + '"><div class="queue"><div class="queueHeader">' + queueLabel + '</div></div></div>').appendTo(container);
