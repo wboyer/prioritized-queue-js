@@ -40,7 +40,7 @@ define(function ()
 
                     if (this.queueIndexLogBase) {
                         var labelMinPriority = Math.pow(this.queueIndexLogBase, i);
-                        var labelMaxPriority = (Math.pow(this.queueIndexLogBase, i + 1) - 1;
+                        var labelMaxPriority = Math.pow(this.queueIndexLogBase, i + 1) - 1;
 
                         if (labelMinPriority == labelMaxPriority)
                             queueLabel += ' (priority ' + labelMinPriority + ')';
