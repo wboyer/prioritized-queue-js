@@ -2,10 +2,10 @@ define(function ()
 {
     return {
 
-    numQueues: null,
-    queueIndexLogBase: null,
+        numQueues: null,
+        queueIndexLogBase: null,
 
-    updateQueue: function (element, queue)
+        updateQueue: function (element, queue)
         {
             element = $(element);
 
@@ -35,8 +35,10 @@ define(function ()
             for (var i = 0; i < queues.length; i++) {
                 var queue = container.find('[data-queue-index="' + i + '"]');
 
+                var queueLabel = 'Queue ' + i + '(Priorities ' + Math.pow(queueIndexLogBase, i) + '-' + (Math.pow(queueIndexLogBase, i+1) - 1) + ')';
+
                 if (!queue.size()) {
-                    queue = $('<div class="queueContainer" data-queue-index="' + i + '"><div class="queue"></div></div>').appendTo(container);
+                    queue = $('<div class="queueContainer" data-queue-index="' + i + '"><div class="queue"><div class="queueHeader">' + queueLabel + '</div></div></div>').appendTo(container);
 
                     if (this.numQueues)
                         queue.css('width', 1. / this.numQueues * 100 + '%');
