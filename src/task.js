@@ -78,7 +78,7 @@ var Task =
 
             this.timeout = setTimeout(function () {
                 log.log('timeout ' + self);
-                delete this.timeout;
+                delete self.timeout;
                 self.abortRun(scheduler);
             },
             10000);
