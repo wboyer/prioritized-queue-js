@@ -75,6 +75,14 @@ var Task =
 
         try {
             var self = this;
+
+            this.timeout = setTimeout(function () {
+                log.log('timeout ' + self);
+                delete this.timeout;
+                self.abortRun(scheduler);
+            },
+            10000);
+
             this.func(
                 function ()
                 {
@@ -102,6 +110,11 @@ var Task =
     finishRun: function (scheduler, backoff)
     {
         log.log('finished ' + this);
+
+        if (this.timeout) {
+            clearTimeout(this.timeout);
+            delete this.timeout;
+        }
 
         scheduler.numRunningTasks -= 1;
 
