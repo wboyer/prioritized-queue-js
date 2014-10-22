@@ -3,6 +3,7 @@ define(function ()
     return {
 
         numQueues: null,
+        stackQueues: false,
         queueIndexLogBase: null,
 
         updateQueue: function (element, queue)
@@ -36,21 +37,21 @@ define(function ()
                 var queue = container.find('[data-queue-index="' + i + '"]');
 
                 if (!queue.size()) {
-                    var queueLabel = 'Queue' + i;
+                    var queueLabel = 'Queue ' + i;
 
                     if (this.queueIndexLogBase) {
                         var labelMinPriority = Math.pow(this.queueIndexLogBase, i);
                         var labelMaxPriority = Math.pow(this.queueIndexLogBase, i + 1) - 1;
 
                         if (labelMinPriority == labelMaxPriority)
-                            queueLabel += ' (priority ' + labelMinPriority + ')';
+                            queueLabel += ' (Priority ' + labelMinPriority + ')';
                         else
-                            queueLabel += ' (priorities ' + labelMinPriority + '-' + labelMaxPriority  + ')';
+                            queueLabel += ' (Priorities ' + labelMinPriority + '-' + labelMaxPriority  + ')';
                     }
 
                     queue = $('<div class="queueContainer" data-queue-index="' + i + '"><div class="queue"><div class="queueHeader">' + queueLabel + '</div></div></div>').appendTo(container);
 
-                    if (this.numQueues)
+                    if (this.numQueues && !this.stackQueues)
                         queue.css('width', 1. / this.numQueues * 100 + '%');
 
                     queue = queue.find('.queue');
