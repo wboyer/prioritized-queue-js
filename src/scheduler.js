@@ -166,8 +166,11 @@ exports.addRoutes = function(app, scheduler)
 
 exports.listenOnSocket = function(socket, scheduler)
 {
-    socket.on('sim', function ()
+    socket.on('connection', function (socket)
     {
-        Simulation.run(scheduler);
+        socket.on('sim', function ()
+        {
+            Simulation.run(scheduler);
+        });
     });
 };
