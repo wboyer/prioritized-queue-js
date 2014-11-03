@@ -112,7 +112,7 @@ define(function ()
             {
                 return (this.getAttribute('data-task-index') >= i);
             }).remove();
-        }
+        },
 
         initDemo: function ($, document, modernizr, io, server)
         {
