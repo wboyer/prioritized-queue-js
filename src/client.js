@@ -125,7 +125,7 @@ define(function ()
                 <div style="position: relative; height: 400px; overflow: auto;"> \
                     <div class="row"> \
                         <div id="controlsContainer" class="col-xs-12 col-md-2"> \
-                            <div id="controls"><button type="button" class="btn btn-default" onclick="$.get(\'http://localhost:3000\');">Simulate...</button></div> \
+                            <div id="controls"><button id="simulationButton" type="button" class="btn btn-default">Simulate...</button></div> \
                         </div> \
                         <div class="col-xs-12 col-md-10"> \
                             <div class="row"> \
@@ -160,6 +160,10 @@ define(function ()
                 self.stackQueues = modernizr.mq('screen and (max-width: 767px)');
                 self.updateQueues($('#queuesContainer'), []);
                 console.log('resize');
+            });
+
+            $(#simulationButton).click(function () {
+                socket.emit('sim');
             });
         }
     }
