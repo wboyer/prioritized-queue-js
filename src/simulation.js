@@ -39,36 +39,26 @@ function normalRandomInRange(mean, stddev, min, max)
     return r;
 }
 
-function runSimulation(scheduler)
+exports.run = function(scheduler)
 {
-        var a = "a".charCodeAt(0);
+    var a = "a".charCodeAt(0);
 
-        var interval = setInterval(function()
-        {
-            for (i = 0; i < 10; i++) {
-                var key = String.fromCharCode(a + Math.round(normalRandomInRange(13.5, 5, 0, 25)));
-                scheduler.submitTask(key, 1, null, function (success, failure)
-                {
-                    setTimeout(function ()
-                    {
-                        success();
-                    }, 300);
-                });
-            }
-        }, 100);
-
-        setTimeout(function()
-        {
-            clearInterval(interval);
-        }, 15000);
-}
-
-exports.addRoutes = function (app, scheduler)
-{
-    app.get('/prioritized-queue/sim', function (req, res)
+    var interval = setInterval(function()
     {
-        res.writeHead(202);
-        runSimulation(scheduler);
-        res.end();
-    });
+        for (i = 0; i < 10; i++) {
+            var key = String.fromCharCode(a + Math.round(normalRandomInRange(13.5, 5, 0, 25)));
+            scheduler.submitTask(key, 1, null, function (success, failure)
+            {
+                setTimeout(function ()
+                {
+                    success();
+                }, 300);
+            });
+        }
+    }, 100);
+
+    setTimeout(function()
+    {
+        clearInterval(interval);
+    }, 15000);
 };
