@@ -162,7 +162,7 @@ define(function ()
                 console.log('resize');
             });
 
-            $(#simulationButton).click(function () {
+            $('#simulationButton').click(function () {
                 socket.emit('sim');
             });
         }
