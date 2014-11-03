@@ -1,0 +1,24 @@
+#controlsContainer { position: absolute; top: 0; left: 0; width: 10% }
+#queuesContainer { position: absolute; top: 0; left: 10%; width: 70% }
+#tasksContainer { position: absolute; top: 0; left: 80%; width: 20% }
+
+.queueContainer { float: left }
+.queue { border: 1px solid black; margin: 4px; padding: 4px }
+
+#controls { background-color: grey; margin: 4px; padding: 4px }
+#tasks { background-color: grey; margin: 4px; padding: 4px }
+
+.entry { padding: 2px; overflow: hidden }
+.task { padding: 2px;  overflow: hidden }
+
+.header { color: black; text-align: center; background: lightgrey; margin: 4px 4px 0px 4px; padding: 4px }
+.subHeader { font: 10px Helvetica, Arial }
+
+.queueHeader { font: 10px Helvetica, Arial; text-align: center; border: 1px solid black; margin: -5px -5px 0px -5px; padding: 4px }
+
+@media (max-width: 639px) {
+    #controlsContainer { width: 100% }
+    #queuesContainer { width: 50% }
+    #tasksContainer { left: 50%; width: 50% }
+    .queueContainer { float: none }
+}

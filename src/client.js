@@ -112,5 +112,55 @@ define(function ()
             {
                 return (this.getAttribute('data-task-index') >= i);
             }).remove();
-        }}
+        }
+
+        initDemo: function ($, document, modernizr, io, server)
+        {
+            if (document.createStyleSheet)
+                document.createStyleSheet('/dist/prioritized-queue/src/css/demo.css');
+            else
+                $("head").append($("<link rel='stylesheet' href='/dist/prioritized-queue/src/css/demo.css' type='text/css' media='screen' />"));
+
+            $("#demo").html(' \
+                <div style="position: relative; height: 400px; overflow: auto;"> \
+                    <div class="row"> \
+                        <div id="controlsContainer" class="col-xs-12 col-md-2"> \
+                            <div id="controls"><button type="button" class="btn btn-default" onclick="$.get(\'http://localhost:3000\');">Simulate...</button></div> \
+                        </div> \
+                        <div class="col-xs-12 col-md-10"> \
+                            <div class="row"> \
+                                <div id="queuesContainer" class="col-xs-12 col-sm-6 col-md-9"> \
+                                    <div class="header">Task Queues<br><span class="subHeader">Key (Priority)</span></div> \
+                                </div> \
+                                <div id="tasksContainer" class="col-xs-12 col-sm-6 col-md-3"> \
+                                    <div class="header">Running Tasks<br><span class="subHeader">Key (Priority, Time in ms)</span></div> \
+                                </div> \
+                            </div> \
+                        </div> \
+                    </div> \
+                </div> \
+            ');
+
+            var socket = io.connect(server);
+            var self = this;
+
+            socket.on('config', function(msg) {
+                self.numQueues = msg.n;
+                self.queueIndexLogBase = msg.b;
+            });
+
+            socket.on('state', function(msg) {
+                self.updateQueues($('#queuesContainer'), msg.q);
+                self.updateTasks($('#tasksContainer'), msg.r);
+            });
+
+            self.stackQueues = modernizr.mq('screen and (max-width: 767px)');
+
+            $(window).on('resize', function () {
+                self.stackQueues = modernizr.mq('screen and (max-width: 767px)');
+                self.updateQueues($('#queuesContainer'), []);
+                console.log('resize');
+            });
+        }
+    }
 });

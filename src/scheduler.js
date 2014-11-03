@@ -1,7 +1,7 @@
 var Queue = require('./queue.js');
 var Task = require('./task.js');
 var Instrumenter = require('./instrumenter.js');
-var Demo = require('./demo.js');
+var Simulation = require('./simulation.js');
 
 var log = require('./log');
 
@@ -156,5 +156,18 @@ exports.newScheduler = function (numQueues, queueCapacity, queueIndexLogBase, ma
 
 exports.addRoutes = function(app, scheduler)
 {
-    Demo.addRoutes(app, scheduler);
+    app.get('/prioritized-queue/sim', function (req, res)
+    {
+        res.writeHead(202);
+        Simulation.run(scheduler);
+        res.end();
+    });
+};
+
+exports.listenOnSocket = function(socket, scheduler)
+{
+    socket.on('sim', function ()
+    {
+        Simulation.run(scheduler);
+    });
 };

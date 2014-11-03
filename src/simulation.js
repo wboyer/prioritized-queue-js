@@ -39,12 +39,8 @@ function normalRandomInRange(mean, stddev, min, max)
     return r;
 }
 
-exports.addRoutes = function (app, scheduler)
+function runSimulation(scheduler)
 {
-    app.get('/prioritized-queue/sim', function (req, res)
-    {
-        res.writeHead(200, {'Content-Type': 'text/plain'});
-
         var a = "a".charCodeAt(0);
 
         var interval = setInterval(function()
@@ -65,7 +61,14 @@ exports.addRoutes = function (app, scheduler)
         {
             clearInterval(interval);
         }, 15000);
+}
 
+exports.addRoutes = function (app, scheduler)
+{
+    app.get('/prioritized-queue/sim', function (req, res)
+    {
+        res.writeHead(202);
+        runSimulation(scheduler);
         res.end();
     });
 };
