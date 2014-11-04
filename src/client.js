@@ -122,7 +122,7 @@ define(function ()
                 $("head").append($("<link rel='stylesheet' href='/dist/prioritized-queue/src/css/demo.css' type='text/css' media='screen' />"));
 
             $("#demo").html(' \
-                <div style="position: relative; height: 400px; overflow: auto;"> \
+                <div style="position: relative; height: 600px; overflow: auto;"> \
                     <div class="row"> \
                         <div id="controlsContainer" class="col-xs-12 col-md-2"> \
                             <div id="controls"><button id="simulationButton" type="button" class="btn btn-default">Simulate...</button></div> \

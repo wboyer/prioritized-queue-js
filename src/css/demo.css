@@ -1,17 +1,22 @@
 .queueContainer { float: left }
 .queue { border: 1px solid black; margin: 4px; padding: 4px }
 
-#controls { border: 1px solid lightgrey; margin: 4px; padding: 4px; }
+#controls { margin: 4px }
 #tasks { background-color: grey; margin: 4px; padding: 4px }
 
 .entry { padding: 2px; overflow: hidden; color: white }
 .task { padding: 2px;  overflow: hidden; color: white }
 
-.header { color: black; text-align: center; background: lightgrey; margin: 4px 4px 0px 4px; padding: 4px; line-height: 1; }
+.header { color: black; text-align: center; background: lightgrey; margin: 4px 4px 0px 4px; padding: 4px; line-height: 1 }
 .subHeader { font: 10px Helvetica, Arial }
 
-.queueHeader { font: 10px Helvetica, Arial; text-align: center; border: 1px solid black; margin: -5px -5px 0px -5px; padding: 4px; color: white; }
+.queueHeader { font: 10px Helvetica, Arial; text-align: center; border: 1px solid black; margin: -5px -5px 0px -5px; padding: 4px; color: white }
 
-@media (max-width: 767px) {
+@media (screen and max-width: 767px) {
     .queueContainer { float: none }
+}
+
+@media (screen and min-width: 768px) {
+    #queuesContainer { padding-right: 0 }
+    #tasksContainer { padding-left: 0 }
 }
