@@ -43,10 +43,12 @@ define(function ()
                         var labelMinPriority = Math.pow(this.queueIndexLogBase, i);
                         var labelMaxPriority = Math.pow(this.queueIndexLogBase, i + 1) - 1;
 
-                        if (labelMinPriority == labelMaxPriority)
-                            queueLabel += ' (Priority ' + labelMinPriority + ')';
-                        else
+                        if (i == (queues.length - 1))
+                            queueLabel += ' (Priorities ' + labelMinPriority + '+)';
+                        if (labelMinPriority != labelMaxPriority)
                             queueLabel += ' (Priorities ' + labelMinPriority + '-' + labelMaxPriority  + ')';
+                        else
+                            queueLabel += ' (Priority ' + labelMinPriority + ')';
                     }
 
                     queue = $('<div class="queueContainer" data-queue-index="' + i + '"><div class="queue"><div class="queueHeader">' + queueLabel + '</div></div></div>').appendTo(container);
