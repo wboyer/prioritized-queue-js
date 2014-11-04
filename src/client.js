@@ -43,7 +43,7 @@ define(function ()
                         var labelMinPriority = Math.pow(this.queueIndexLogBase, i);
                         var labelMaxPriority = Math.pow(this.queueIndexLogBase, i + 1) - 1;
 
-                        if (i == (queues.length - 1))
+                        if (i == (this.numQueues - 1))
                             queueLabel += ' (Priorities ' + labelMinPriority + '+)';
                         if (labelMinPriority != labelMaxPriority)
                             queueLabel += ' (Priorities ' + labelMinPriority + '-' + labelMaxPriority  + ')';
