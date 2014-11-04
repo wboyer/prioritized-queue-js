@@ -45,7 +45,7 @@ define(function ()
 
                         if (i == (this.numQueues - 1))
                             queueLabel += ' (Priorities ' + labelMinPriority + '+)';
-                        if (labelMinPriority != labelMaxPriority)
+                        else if (labelMinPriority != labelMaxPriority)
                             queueLabel += ' (Priorities ' + labelMinPriority + '-' + labelMaxPriority  + ')';
                         else
                             queueLabel += ' (Priority ' + labelMinPriority + ')';
