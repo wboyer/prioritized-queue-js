@@ -76,12 +76,13 @@ var Task =
         try {
             var self = this;
 
-            this.timeout = setTimeout(function () {
-                log.log('timeout ' + self);
-                delete self.timeout;
-                self.abortRun(scheduler);
-            },
-            10000);
+            if (scheduler.timeout > 0)
+                this.timeout = setTimeout(function () {
+                    log.log('timeout ' + self);
+                    delete self.timeout;
+                    self.abortRun(scheduler);
+                },
+                scheduler.timeout);
 
             this.func(
                 function ()

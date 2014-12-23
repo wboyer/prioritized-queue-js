@@ -122,7 +122,7 @@ var Scheduler =
     }
 };
 
-exports.newScheduler = function (numQueues, queueCapacity, queueIndexLogBase, maxRunningTasks, maxNumFailures, createInstrumenter, instrumenterSocket)
+exports.newScheduler = function (numQueues, queueCapacity, queueIndexLogBase, maxRunningTasks, maxNumFailures, timeout, createInstrumenter, instrumenterSocket)
 {
     var scheduler = Object.create(Scheduler);
 
@@ -139,6 +139,8 @@ exports.newScheduler = function (numQueues, queueCapacity, queueIndexLogBase, ma
     scheduler.numRunningTasks = 0;
 
     scheduler.maxNumFailures = maxNumFailures;
+
+    scheduler.timeout = timeout;
 
     if (createInstrumenter) {
         scheduler.instrumenter = Instrumenter.newInstrumenter(scheduler, instrumenterSocket, 0);
